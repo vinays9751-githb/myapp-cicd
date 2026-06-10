@@ -18,7 +18,7 @@ phases:
 
   build:
     commands:
-      - echo Build started on `date`
+      - echo Build started on $(date)
 
       - docker build -t myapp .
 
@@ -34,4 +34,4 @@ phases:
 
       - docker push $REPOSITORY_URI:latest
 
-      - echo Build completed on `date`
+      - echo Build completed on $(date)
