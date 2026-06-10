@@ -1,0 +1,37 @@
+version: 0.2
+
+env:
+  variables:
+    REPOSITORY_URI: 278396816876.dkr.ecr.us-east-2.amazonaws.com/myapp
+
+phases:
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 278396816876.dkr.ecr.us-east-2.amazonaws.com
+
+      - COMMIT_ID=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_ID}
+
+      - echo Image Tag = $IMAGE_TAG
+
+  build:
+    commands:
+      - echo Build started on `date`
+
+      - docker build -t myapp .
+
+      - docker tag myapp:latest $REPOSITORY_URI:$IMAGE_TAG
+
+      - docker tag myapp:latest $REPOSITORY_URI:latest
+
+  post_build:
+    commands:
+      - echo Pushing Docker images...
+
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+
+      - docker push $REPOSITORY_URI:latest
+
+      - echo Build completed on `date`
