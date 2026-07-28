@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    REPOSITORY_URI: 278396816876.dkr.ecr.us-east-2.amazonaws.com/myapp
+    REPOSITORY_URI: 278396816876.dkr.ecr.us-east-2.amazonaws.com/my-app-web
 
 phases:
 
@@ -20,7 +20,7 @@ phases:
     commands:
       - echo Build started on $(date)
 
-      - docker build -t myapp .
+      - docker build -t my-app-web .
 
       - docker tag myapp:latest $REPOSITORY_URI:$IMAGE_TAG
 
